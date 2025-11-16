@@ -1,0 +1,54 @@
+<div class="flex flex-col items-center justify-center gap-10 ">
+
+  <h4 class="mt-10 text-2xl font-semibold">Liste des suggetions</h4>
+
+  <input type="text" placeholder="rechercher une suggestion"  [(ngModel)]="searchTerm"  (input)="filterItems()"  class=" w-[90%]  p-2  font-normal border-2 border-gray-400 bg-white rounded-md  ">
+
+  <div class="bg-white w-[90%] p-6  border-2  border-gray-400 rounded-md " *ngFor="let suggestion of filteredSuggestions ">
+
+    <div >
+      <h4 class="text-black font-normal text-xl"> {{suggestion.title}}</h4>
+      <div class="flex gap-2 mt-1">
+        <p class="text-blue-600 text-sm ">{{suggestion.category}} </p>
+        <p class="text-sm text-gray-600 ">{{suggestion.date | date:'longDate'}}</p>
+      </div>
+    </div>
+    <div class=" flex flex-col mt-10 gap-3  ">
+    <p class="text-sm text-gray-600">{{suggestion.description}}</p>
+      <div *ngIf="suggestion.status === 'acceptee'">
+        <p class="bg-green-200 w-20 text-center rounded-full text-black text-sm p-1">
+          {{suggestion.status}}
+        </p>
+      </div>
+
+      <div *ngIf="!(suggestion.status === 'acceptee')">
+        <p class="bg-red-200 w-20 text-center rounded-full text-black text-sm p-1">
+          {{suggestion.status}}
+        </p>
+      </div>
+
+      <div class="flex flex-row gap-4" *ngIf="suggestion.status === 'acceptee'" >
+
+        <button class="bg-blue-400 w-28 h-12 rounded-md flex justify-evenly items-center" (click)="addLike()">
+
+          <mat-icon class=" w-3 h-3">thumb_up</mat-icon>
+
+          <p class="text-sm font-medium text-blue-900">LIKE {{ likeCount }}</p>
+
+        </button>
+
+        <button class="bg-gray-200 w-44 h-12 rounded-md flex justify-evenly items-center">
+
+          <mat-icon class="w-3 h-3 text-gray-500">favorite_border</mat-icon>
+          <p class="text-sm font-medium text-black">ajouter au favoris</p>
+
+        </button>
+
+      </div>
+    </div>
+
+
+  </div>
+
+
+  </div>
