@@ -7,7 +7,13 @@
   <div class="bg-white w-[90%] p-6  border-2  border-gray-400 rounded-md " *ngFor="let suggestion of filteredSuggestions ">
 
     <div >
+      <div class="flex flex-row justify-between ">
       <h4 class="text-black font-normal text-xl"> {{suggestion.title}}</h4>
+        <button class="text-xl text-blue-600"  [routerLink]="['/suggestions', suggestion.id]" >
+          Details
+        </button>
+      </div>
+
       <div class="flex gap-2 mt-1">
         <p class="text-blue-600 text-sm ">{{suggestion.category}} </p>
         <p class="text-sm text-gray-600 ">{{suggestion.date | date:'longDate'}}</p>
