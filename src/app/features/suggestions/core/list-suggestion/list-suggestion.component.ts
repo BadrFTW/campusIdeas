@@ -10,7 +10,7 @@ export class ListSuggestionComponent {
   searchTerm: string = '';
   favourites : Suggestion[] = []
 
-  suggestions: Suggestion[] = [
+  public static suggestions: Suggestion[] = [
     {
       id: 1,
       title: 'Organiser une journée team building',
@@ -58,13 +58,22 @@ export class ListSuggestionComponent {
     }
     ];
 
-  filteredSuggestions: Suggestion[] = [...this.suggestions];
+
+  public static addSuggestion(suggestion: Suggestion) {
+    // Ajouter au tableau sans récursion
+    this.suggestions.push(suggestion);
+  }
+
+
+
+
+  filteredSuggestions: Suggestion[] = [...ListSuggestionComponent.suggestions];
 
 
 
   addLike(id:number): void {
     let suggestion: Suggestion | undefined  ;
-     suggestion = this.suggestions.find(sugg => sugg.id === id )
+     suggestion = ListSuggestionComponent.suggestions.find(sugg => sugg.id === id )
       if(suggestion) {
         suggestion.likes = suggestion.likes + 1;
       }
@@ -78,13 +87,13 @@ export class ListSuggestionComponent {
 
   filterItems(): void {
     if (!this.searchTerm) {
-      this.filteredSuggestions = [...this.suggestions];
+      this.filteredSuggestions = [...ListSuggestionComponent.suggestions];
       return;
     }
 
     const term = this.searchTerm.toLowerCase();
 
-    this.filteredSuggestions = this.suggestions.filter((suggestion) =>
+    this.filteredSuggestions = ListSuggestionComponent.suggestions.filter((suggestion) =>
       suggestion.title.toLowerCase().includes(term) ||
       suggestion.description.toLowerCase().includes(term) ||
       suggestion.category.toLowerCase().includes(term)
@@ -95,7 +104,7 @@ export class ListSuggestionComponent {
   addToFavourite  = (id:number)=>{
 
     let suggestion: Suggestion | undefined  ;
-    suggestion = this.suggestions.find(sugg => sugg.id === id )
+    suggestion = ListSuggestionComponent.suggestions.find(sugg => sugg.id === id )
     if(suggestion) {
      this.favourites.push(suggestion);
     alert("added")

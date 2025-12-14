@@ -6,12 +6,14 @@ import { SuggestionsComponent } from './suggestions.component';
 import { SuggestionDetailsComponent } from './core/suggestion-details/suggestion-details.component';
 import {MatIcon} from '@angular/material/icon';
 import {ReactiveFormsModule} from '@angular/forms';
+import { SuggestionFormComponent } from './core/suggestion-form/suggestion-form.component';
 
 
 @NgModule({
   declarations: [
     SuggestionsComponent,
-    SuggestionDetailsComponent
+    SuggestionDetailsComponent,
+    SuggestionFormComponent
   ],
   imports: [
     CommonModule,

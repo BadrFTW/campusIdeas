@@ -1,0 +1,125 @@
+<div class="flex justify-center items-center">
+
+<div class="card p-4 ">
+
+  <form method="post" class="w-[100%]" [formGroup]="suggestionForm" (submit)="onSubmit()">
+
+    <!-- Description -->
+    <div class="mb-3">
+      <label for="title" class="block">Titre:</label>
+      <input id="title" name="title" type="text" class="form-control" formControlName="title">
+    </div>
+
+    <!-- Message: Champ requis -->
+    <span
+      *ngIf="
+          title?.hasError('required') &&
+          (title?.dirty || title?.touched || isSubmitted)
+        "
+      class=" text-danger">
+        <small>Le titre est obligatoire.</small>
+      </span>
+
+    <!-- Message: Longueur minimale -->
+    <span
+      *ngIf="
+          title?.hasError('minlength') &&
+          (title?.dirty || title?.touched || isSubmitted) &&
+          !title?.hasError('required')
+        "
+      class=" text-danger">
+        <small>
+          Le titre doit contenir au minimum 5 caractères.
+          (Actuel: {{ title?.value?.length || 0 }} caractères)
+        </small>
+      </span>
+
+    <!-- Message: Format pattern -->
+    <span
+      *ngIf="
+          title?.hasError('pattern') &&
+          (title?.dirty || title?.touched || isSubmitted) &&
+          !title?.hasError('required') &&
+          !title?.hasError('minlength')
+        "
+      class=" text-danger">
+        <small>
+          Le titre doit commencer par une majuscule et ne contenir que des lettres.
+        </small>
+      </span>
+
+
+
+
+
+
+    <!-- Description -->
+    <div class="mb-3">
+      <label for="description" class="block">Description :</label>
+      <textarea id="description" name="description" class="form-control h-32" formControlName="description"></textarea>
+    </div>
+    <!-- Message: Champ requis -->
+    <span
+      *ngIf="
+          description?.hasError('required') &&
+          (description?.dirty || description?.touched || isSubmitted)
+        "
+      class="error text-danger">
+        <small>La description est obligatoire.</small>
+      </span>
+
+    <!-- Message: Longueur minimale -->
+    <span
+      *ngIf="
+          description?.hasError('minlength') &&
+          (description?.dirty || description?.touched || isSubmitted) &&
+          !description?.hasError('required')
+        "
+      class="error text-danger">
+        <small>
+          La description doit contenir au minimum 30 caractères.
+          (Actuel: {{ description?.value?.length || 0 }} caractères,
+          besoin: {{ 30 - (description?.value?.length || 0) }} de plus)
+        </small>
+      </span>
+
+
+
+
+    <!-- category -->
+    <div class="mb-3">
+      <label for="category" class="block">Catégorie :</label>
+      <select id="category" name="category" class="form-select" formControlName="category">
+        <option value="">-- Sélectionnez une catégorie --</option>
+        <option *ngFor="let cat of categories">{{ cat }}</option>
+      </select>
+    </div>
+    <!-- Message: Champ requis -->
+    <span
+      *ngIf="
+          category?.hasError('required') &&
+          (category?.dirty || category?.touched || isSubmitted)
+        "
+      class="error text-danger">
+        <small>Veuillez sélectionner une catégorie.</small>
+      </span>
+
+
+    <!-- date -->
+
+    <div class="mb-3">
+      <label for="date" class="block">Date :</label>
+      <input id="date" name="date" type="text" class="form-control" readonly formControlName="date">
+    </div>
+
+    <!-- status -->
+    <div class="mb-3">
+      <label for="status" class="block">Status :</label>
+      <input id="status" name="status" type="text" class="form-control" value="en attente" readonly formControlName="status">
+    </div>
+    <button type="submit" class="btn btn-primary"     >Soumettre</button>
+
+  </form>
+
+</div>
+</div>

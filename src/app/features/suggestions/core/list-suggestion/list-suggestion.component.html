@@ -3,7 +3,7 @@
   <h4 class="mt-10 text-2xl font-semibold">Liste des suggetions</h4>
 
   <input type="text" placeholder="rechercher une suggestion"  [(ngModel)]="searchTerm"  (input)="filterItems()"  class=" w-[90%]  p-2  font-normal border-2 border-gray-400 bg-white rounded-md  ">
-
+  <button class="p-4  bg-gradient-to-r from-blue-800 to-blue-400 rounded-xl text-xl " [routerLink]="['/suggestions/add']">Ajouter une nouvelle suggestion</button>
   <div class="bg-white w-[90%] p-6  border-2  border-gray-400 rounded-md " *ngFor="let suggestion of filteredSuggestions ">
 
     <div >
