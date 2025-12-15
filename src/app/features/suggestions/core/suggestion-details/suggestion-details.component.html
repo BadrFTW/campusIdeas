@@ -3,9 +3,12 @@
     <div>
       <div class="flex flex-row justify-between ">
         <h4 class="text-black font-normal text-xl"> {{suggestion?.title}}</h4>
+        <div>
+        <button class="text-xl text-red-500 mr-10" (click)="handleDeleteSuggestion(suggestion?.id || 0)" >Delete</button>
         <button class="text-xl text-blue-600"  routerLink="/suggestions"  >
           back to list
         </button>
+        </div>
       </div>
       <div class="flex gap-2 mt-1">
         <p class="text-blue-600 text-sm">{{suggestion?.category}}</p>

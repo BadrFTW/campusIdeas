@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Suggestion} from '../../../../models/suggestion';
 import {Router} from '@angular/router';
 import {ListSuggestionComponent} from '../list-suggestion/list-suggestion.component';
+import {SuggestionService} from '../../../../Services/suggestion.service';
 
 @Component({
   selector: 'app-suggestion-form',
@@ -10,16 +11,20 @@ import {ListSuggestionComponent} from '../list-suggestion/list-suggestion.compon
   styleUrl: './suggestion-form.component.css'
 })
 
-export class SuggestionFormComponent  {
+export class SuggestionFormComponent  implements OnInit {
+  suggestionService : SuggestionService =inject(SuggestionService)
+   formBuilder: FormBuilder = inject(FormBuilder);
+   router:Router= inject(Router);
   categories: string[] = [ 'Infrastructure et bâtiments', 'Technologie et services numériques', 'Restauration et cafétéria', 'Hygiène et environnement', 'Transport et mobilité', 'Activités et événements', 'Sécurité', 'Communication interne', 'Accessibilité', 'Autre' ];
+  suggestionList : Suggestion[] | undefined =[];
   suggestionForm: FormGroup;
-  constructor(private formBuilder: FormBuilder,
-              private router:Router
 
-  ) {
+  constructor() {
+
+
+
 
     this.suggestionForm=this.formBuilder.group({
-
       title: ['', [
         Validators.required,
         Validators.minLength(5),
@@ -40,14 +45,25 @@ export class SuggestionFormComponent  {
         disabled: true
       }]
 
-
-
-
-
-
-
     })
   }
+
+  ngOnInit(): void {
+
+      // On s'abonne à l'Observable pour recevoir les données
+      this.suggestionService.getSuggestionsList().subscribe({
+        next: (data) => {
+          this.suggestionList = data; // Succès : on stocke les données
+
+        },
+        error: (err) => {
+          console.error('Erreur lors de la récupération', err); // Gestion d'erreur
+        }
+      });
+
+
+
+    }
 
   private getCurrentDate(): string {
     const now = new Date();
@@ -65,17 +81,15 @@ isSubmitted: boolean = false;
   get category() { return this.suggestionForm.get('category'); }
   get date() { return this.suggestionForm.get('date'); }
   get status() { return this.suggestionForm.get('status'); }
-  private static generateId(): number {
-    return ListSuggestionComponent.suggestions.length;
+  private  generateId(): number {
+    return this.suggestionList?.length || 0;
   }
   onSubmit(): void {
-    console.log("gg")
     this.isSubmitted = true;
-
     if (this.suggestionForm.valid) {
       // Créer la nouvelle suggestion
       const newSuggestion: Suggestion = {
-        id: SuggestionFormComponent.generateId(),
+        id: this.generateId(),
         title: this.title?.value,
         description: this.description?.value,
         category: this.category?.value,
@@ -85,7 +99,7 @@ isSubmitted: boolean = false;
       };
 
       // Ajouter à la liste des suggestions
-      ListSuggestionComponent.addSuggestion(newSuggestion);
+    this.suggestionService.addSuggestion(newSuggestion).subscribe();
 
       console.log('Nouvelle suggestion ajoutée:', newSuggestion);
 
@@ -105,7 +119,6 @@ isSubmitted: boolean = false;
       });
 
       this.isSubmitted = false;
-
       // Redirection vers la liste des suggestions
       this.router.navigate(['/suggestions']);
     }
